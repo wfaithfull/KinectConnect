@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using Microsoft.Kinect;
 using Microsoft.Samples.Kinect.WpfViewers;
 using KinectConnect.SDK1x.Models;
+using System.Windows.Data;
+using System.Windows;
 
 namespace KinectConnect.SDK1x.ViewModels
 {
@@ -39,6 +41,8 @@ namespace KinectConnect.SDK1x.ViewModels
             set { colorStream = value; FirePropertyChanged(); }
         }
 
+        private object padlock = new object();
+
         private ICommand initAsyncCommand;
 
         public ICommand InitAsyncCommand
@@ -49,33 +53,61 @@ namespace KinectConnect.SDK1x.ViewModels
                 {
                     LoadingMessage = "Searching for kinect sensors...";
                     return Task.Run(() => {
-
-
                         Chooser.Start();
+                        if (Chooser.Kinect == null)
+                        {
+                            MessageBox.Show("Unable to detect an available Kinect Sensor");
+                            Application.Current.Shutdown();
+                        }
+                        Manager.Dispatcher.Invoke(() => {
+                            var kinectSensorBinding = new Binding("Kinect") { Source = Chooser };
+                            BindingOperations.SetBinding(this.Manager, KinectSensorManager.KinectSensorProperty, kinectSensorBinding);
+                        });
                     });
+                    //return App.Current.Dispatcher.InvokeAsync(new Action(Chooser.Start)).Task;
                 }));
             }
         }
 
         public KinectViewModel()
         {
-            Chooser = new KinectSensorChooser();
             Manager = new KinectSensorManager();
-            Chooser.KinectChanged += KinectChangedHandler;
+            Manager.KinectSensorChanged += KinectChangedHandler;
+            //Manager = new KinectSensorManager();
+            //Chooser = new KinectSensorChooser(); 
+            //Chooser.KinectChanged += KinectChangedHandler;
         }
 
         
 
-        private async void KinectChangedHandler(object sender, KinectChangedEventArgs args)
+        private async void KinectChangedHandler(object sender, KinectSensorManagerEventArgs<KinectSensor> args)
         {
-            KinectSensor newSensor = args.NewSensor;
-            KinectSensor oldSensor = args.OldSensor;
+            KinectSensor newSensor = args.NewValue;
+            KinectSensor oldSensor = args.OldValue;
 
+            if (oldSensor != null)
+            {
+                oldSensor.ColorStream.Disable();
+                oldSensor.DepthStream.Disable();
+                oldSensor.DepthStream.Range = DepthRange.Default;
+                oldSensor.SkeletonStream.Disable();
+                oldSensor.SkeletonStream.EnableTrackingInNearRange = false;
+                oldSensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Default;
+            }
+            
             LoadingMessage = string.Format("Kinect found: [{0}] [{1}]", newSensor.UniqueKinectId, newSensor.Status.ToString());
 
-            Manager.KinectSensor = newSensor;
-
-            await Task.Factory.StartNew(() => { faceExtractor = new FaceDataExtractor(newSensor); });
+            // Bind the KinectSensor from the sensorChooser to the KinectSensor on the KinectSensorManager
+            
+            //Debug.WriteLine("changing elevation angle");
+            //newSensor.ElevationAngle += 5;
+            Debug.WriteLine("Preparing sensor");
+            Manager.ColorStreamEnabled = true;
+            Manager.DepthStreamEnabled = true;
+            Manager.SkeletonEnableTrackingInNearMode = true;
+            Manager.SkeletonTrackingMode = SkeletonTrackingMode.Seated;
+            Manager.SkeletonStreamEnabled = true;
+            Manager.KinectSensorEnabled = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

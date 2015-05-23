@@ -10,9 +10,9 @@
         Title="KinectConnect" Icon="Assets/bangoricon.png" Height="350" Width="525">
     <Window.DataContext>
         <vm:KinectViewModel>
-            <vm:KinectViewModel.Model>
-                <models:SensorModel/>
-            </vm:KinectViewModel.Model>
+            <vm:KinectViewModel.Chooser>
+                <tk:KinectSensorChooser/>
+            </vm:KinectViewModel.Chooser>
         </vm:KinectViewModel>
     </Window.DataContext>
     <Grid>
@@ -41,6 +41,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <controls:KinectColorViewer Grid.Row="0" Grid.Column="0" KinectSensorManager="{Binding Manager}"/>
+                <controls:KinectSkeletonViewer Grid.Row="0" Grid.Column="0" KinectSensorManager="{Binding Manager}"/>
                 <controls:KinectDepthViewer Grid.Row="0" Grid.Column="1" KinectSensorManager="{Binding Manager}"/>
                 <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2">
                     <controls:KinectSettings  KinectSensorManager="{Binding Manager}"/>
