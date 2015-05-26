@@ -59,7 +59,7 @@
       <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\bin\Microsoft.Kinect.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Kinect.Toolkit.FaceTracking">
-      <HintPath>..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\bin\Microsoft.Kinect.Toolkit.FaceTracking.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\bin\Microsoft.Kinect.Toolkit.FaceTracking.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Samples.Kinect.WpfViewers">
       <HintPath>..\..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.8.0\bin\Microsoft.Samples.Kinect.WpfViewers.dll</HintPath>

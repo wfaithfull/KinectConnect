@@ -55,7 +55,7 @@ namespace KinectConnect.Core.SDK1x
                     skeleton
                 );
 
-                if (frame.TrackSuccessful)
+                //if (frame.TrackSuccessful)
                 {
                     FaceData serializable = frame.ToSerializableFaceData();
                     FireFaceFrameReady(serializable);

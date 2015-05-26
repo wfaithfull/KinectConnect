@@ -9,36 +9,32 @@ namespace KinectConnect.Core.SDK1x
     [Serializable]
     public class FaceData
     {
-        public FaceData(List<Vec3> facePoints, 
-            List<string> facePointDescriptors,
-            List<PointF> projectedFacePoints,
-            List<string> projectedFacePointDescriptors,
-            List<float> animationUnits,
-            List<string> animationUnitDescriptors,
+        public FaceData(Dictionary<string, Vec3> facePoints, 
+            Dictionary<string, Vec2> projectedFacePoints,
+            Dictionary<string, float> animationUnits,
             Vec3 rotation,
             Vec3 translation)
         {
             this.FacePoints =                       facePoints;
-            this.FacePointDescriptors =             facePointDescriptors;
             this.ProjectedFacePoints =              projectedFacePoints;
-            this.ProjectedFacePointDescriptors =    projectedFacePointDescriptors;
             this.AnimationUnits =                   animationUnits;
-            this.AnimationUnitDescriptors =         animationUnitDescriptors;
             this.Rotation =                         rotation;
             this.Translation =                      translation;
         }
 
-        public List<Vec3> FacePoints { get; set; }
-        public List<string> FacePointDescriptors { get; set; }
+        public Dictionary<string, Vec3> FacePoints { get; set; }
 
-        public List<PointF> ProjectedFacePoints { get; set; }
-        public List<string> ProjectedFacePointDescriptors { get; set; }
+        public Dictionary<string, Vec2> ProjectedFacePoints { get; set; }
 
-        public List<float> AnimationUnits { get; set; }
-        public List<string> AnimationUnitDescriptors { get; set; }
+        public Dictionary<string, float> AnimationUnits { get; set; }
 
         public Vec3 Rotation { get; set; }
         public Vec3 Translation { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0} FacePoints, {1} ProjectedFacePoints, {2} AnimationUnits", FacePoints.Count, ProjectedFacePoints.Count, AnimationUnits.Count);
+        }
 
     }
 
@@ -51,7 +47,7 @@ namespace KinectConnect.Core.SDK1x
     }
 
     [Serializable]
-    public struct PointF
+    public struct Vec2
     {
         public float X { get; set; }
         public float Y { get; set; }
@@ -61,17 +57,18 @@ namespace KinectConnect.Core.SDK1x
     {
         public static FaceData ToSerializableFaceData(this FaceTrackFrame frame)
         {
-            var shape = frame.Get3DShape().ToSerializableTuple(x => { return x.ToSerializableVec3(); });
-            var units = frame.GetAnimationUnitCoefficients().ToSerializableTuple(x => { return x; });
-            var projected = frame.GetProjected3DShape().ToSerializableTuple(x => { return x.ToSerializablePointF(); });
+            var shape = frame.Get3DShape().ToDictionary(x => { return x.ToSerializableVec3(); });
+            var projected = frame.GetProjected3DShape().ToDictionary(x => { return x.ToSerializablePointF(); });
+            var units = frame.GetAnimationUnitCoefficients().ToDictionary(x => { return x; });
             var rotation = frame.Rotation.ToSerializableVec3();
             var translation = frame.Translation.ToSerializableVec3();
 
             return new FaceData(
-                shape.Item1, shape.Item2,
-                projected.Item1, projected.Item2,
-                units.Item1, units.Item2,
-                rotation, translation
+                shape, 
+                projected, 
+                units,
+                rotation, 
+                translation
             );
         }
 
@@ -85,9 +82,9 @@ namespace KinectConnect.Core.SDK1x
             };
         }
 
-        public static PointF ToSerializablePointF(this Microsoft.Kinect.Toolkit.FaceTracking.PointF point)
+        public static Vec2 ToSerializablePointF(this Microsoft.Kinect.Toolkit.FaceTracking.PointF point)
         {
-            return new PointF()
+            return new Vec2()
             {
                 X = point.X,
                 Y = point.Y
@@ -105,22 +102,20 @@ namespace KinectConnect.Core.SDK1x
         /// <param name="points">The collection</param>
         /// <param name="converter">Function converting from TFrom to TTo</param>
         /// <returns>A tuple with a list of the data points, and matching descriptors for each.</returns>
-        public static Tuple<List<TTo>, List<string>> ToSerializableTuple<TEnum, TFrom, TTo>(
+        public static Dictionary<string, TTo> ToDictionary<TEnum, TFrom, TTo>(
             this EnumIndexableCollection<TEnum, TFrom> points, 
             Func<TFrom, TTo> converter)
         {
-            List<TTo> data = new List<TTo>();
-            List<string> descriptors = new List<string>();
+            Dictionary<string, TTo> data = new Dictionary<string, TTo>();
 
             foreach (var key in Enum.GetValues(typeof(TEnum)))
             {
                 TFrom datapoint = points[(TEnum)key];
                 TTo converted = converter(datapoint);
-                data.Add(converted);
-                descriptors.Add(key.ToString());
+                data.Add(key.ToString(), converted);
             }
 
-            return new Tuple<List<TTo>, List<string>>(data,descriptors);
+            return data;
         }
 
     }

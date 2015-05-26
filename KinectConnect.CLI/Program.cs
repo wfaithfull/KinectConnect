@@ -1,8 +1,10 @@
 ﻿using KinectConnect.Core.SDK1x;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace KinectConnect.CLI
@@ -35,13 +37,23 @@ namespace KinectConnect.CLI
         {
             foreach(string line in Splash())
                 Console.WriteLine(line);
+
+            new Thread(() =>
+            {
+                KinectServer.Start(50001);
+            }).Start();
+            
             KinectManager manager = new KinectManager();
 
             Console.WriteLine("Making strategy");
             FaceDataStrategy faceExtractor = new FaceDataStrategy();
             faceExtractor.FaceFrameReady += (s, e) =>
             {
-                Console.WriteLine(e.FacePoints[0]);
+                //Console.WriteLine("Serializing to JSON... " + e.ToString());
+                string json = JsonConvert.SerializeObject(e);
+                
+                KinectServer.WriteToAll(Encoding.UTF8.GetBytes(json));
+                
             };
             Console.WriteLine("Making extractor");
             Extractor extractor = new Extractor();
