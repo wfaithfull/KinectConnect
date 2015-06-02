@@ -11,8 +11,9 @@ while(1)
     if(isempty(frame))
         continue;
     end
-    [facepoints, projected, animationunits, rotation, translation] = extractFaceData(frame);
-    p = double(cell2mat(facepoints(:,2)'));
-    scatter3(p(1,:), p(2,:), p(3,:));
+    imshow(frame.GetColorImage);
+    %[facepoints, projected, animationunits, rotation, translation] = extractFaceData(frame);
+    %p = double(cell2mat(facepoints(:,2)'));
+    %scatter3(p(1,:), p(2,:), p(3,:));
     drawnow;
 end

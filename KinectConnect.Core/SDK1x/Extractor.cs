@@ -56,7 +56,7 @@ namespace KinectConnect.Core.SDK1x
             AggregateCapabilities();
         }
 
-        public void Start(KinectSensor sensor)
+        public void Initialise(KinectSensor sensor)
         {
             PrepareKinect(capabilities, sensor);
             tracker = new FaceTracker(sensor);

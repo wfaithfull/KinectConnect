@@ -16,4 +16,9 @@ namespace KinectConnect.Core.SDK1x
         void Extract(AllFramesReadyEventArgs args);
     }
 
+    public interface IEventedExtractorStrategy<T> : IExtractorStrategy
+    {
+        event Action<T> DataExtracted;
+    }
+
 }

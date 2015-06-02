@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KinectConnect.Core.SDK1x
 {
-    public class FaceDataStrategy : IExtractorStrategy
+    public class FaceDataStrategy : IEventedExtractorStrategy<FaceData>
     {
         private FaceTracker tracker;
 
@@ -54,12 +54,9 @@ namespace KinectConnect.Core.SDK1x
                     depthData,
                     skeleton
                 );
-
-                //if (frame.TrackSuccessful)
-                {
-                    FaceData serializable = frame.ToSerializableFaceData();
-                    FireFaceFrameReady(serializable);
-                }
+                
+                FaceData serializable = frame.ToSerializableFaceData();
+                FireDataExtracted(serializable);
             }
         }
 
@@ -73,5 +70,13 @@ namespace KinectConnect.Core.SDK1x
             colorData = new byte[sensor.ColorStream.FramePixelDataLength];
             depthData = new short[sensor.DepthStream.FramePixelDataLength];
         }
+
+        private void FireDataExtracted(FaceData data)
+        {
+            if (DataExtracted != null)
+                DataExtracted(data);
+        }
+
+        public event Action<FaceData> DataExtracted;
     }
 }
