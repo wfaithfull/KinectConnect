@@ -19,3 +19,7 @@ Middleware to serve kinect data to other applications
 
 ### Matlab
 Example usage in matlab, including .m files for conversion and assistance can be found in the ```src/Matlab``` directory.
+
+1. Build the project in Release configuration.
+2. A post-build event will copy the binaries into ```src/Matlab/lib```
+3. Test the examples
