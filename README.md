@@ -23,3 +23,5 @@ Example usage in matlab, including .m files for conversion and assistance can be
 1. Build the project in Release configuration.
 2. A post-build event will copy the binaries into ```src/Matlab/lib```
 3. Test the examples
+
+![alt ml](https://gfycat.com/BarrenIdealCrossbill)
