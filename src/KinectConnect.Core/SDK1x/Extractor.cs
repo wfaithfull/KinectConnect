@@ -2,6 +2,7 @@
 using Microsoft.Kinect.Toolkit.FaceTracking;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace KinectConnect.Core.SDK1x
 
     public class Extractor
     {
+
         private const ColorImageFormat DEFAULT_COLOR_FORMAT = ColorImageFormat.RgbResolution640x480Fps30;
         private const DepthImageFormat DEFAULT_DEPTH_FORMAT = DepthImageFormat.Resolution320x240Fps30;
         private static TransformSmoothParameters DEFAULT_SKELETON_TRANSFORM_PARAMS = new TransformSmoothParameters()
@@ -59,8 +61,8 @@ namespace KinectConnect.Core.SDK1x
         public void Initialise(KinectSensor sensor)
         {
             PrepareKinect(capabilities, sensor);
-            tracker = new FaceTracker(sensor);
 
+            tracker = new FaceTracker(sensor);
             colorFormat = sensor.ColorStream.Format;
             depthFormat = sensor.DepthStream.Format;
 
@@ -78,10 +80,10 @@ namespace KinectConnect.Core.SDK1x
 
         private void PrepareKinect(Capabilities capabilities, KinectSensor sensor)
         {
-            if (capabilities.HasFlag(Capabilities.ColorStream))
+            if (capabilities.HasFlag(Capabilities.ColorStream) && !sensor.ColorStream.IsEnabled)
                 sensor.ColorStream.Enable(DEFAULT_COLOR_FORMAT);
 
-            if (capabilities.HasFlag(Capabilities.DepthStream))
+            if (capabilities.HasFlag(Capabilities.DepthStream) && !sensor.DepthStream.IsEnabled)
                 sensor.DepthStream.Enable(DEFAULT_DEPTH_FORMAT);
             
             if(capabilities.HasFlag(Capabilities.NearMode)) {
@@ -92,7 +94,7 @@ namespace KinectConnect.Core.SDK1x
             if(capabilities.HasFlag(Capabilities.Seated))
                 sensor.SkeletonStream.TrackingMode = SkeletonTrackingMode.Seated;
 
-            if (capabilities.HasFlag(Capabilities.SkeletonStream))
+            if (capabilities.HasFlag(Capabilities.SkeletonStream) && !sensor.SkeletonStream.IsEnabled)
                 sensor.SkeletonStream.Enable(DEFAULT_SKELETON_TRANSFORM_PARAMS);
 
             if (!sensor.IsRunning)

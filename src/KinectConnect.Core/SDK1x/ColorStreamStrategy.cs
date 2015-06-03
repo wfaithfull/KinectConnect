@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace KinectConnect.Core.SDK1x
 {
-    public class ColorStreamStrategy : IEventedExtractorStrategy<Bitmap>
+    public abstract class ColorStreamStrategy<T> : IEventedExtractorStrategy<T>
     {
         public Capabilities RequiredCapabilities()
         {
@@ -22,12 +22,26 @@ namespace KinectConnect.Core.SDK1x
             // Not needed
         }
 
-        public void Extract(Microsoft.Kinect.AllFramesReadyEventArgs args)
+        public void Extract(AllFramesReadyEventArgs args)
+        {
+            T data = DoExtract(args);
+            if (DataExtracted != null)
+                DataExtracted(data);
+        }
+
+        protected abstract T DoExtract(AllFramesReadyEventArgs args);
+
+        public event Action<T> DataExtracted;
+    }
+
+    public class BitmapStreamStrategy : ColorStreamStrategy<Bitmap>
+    {
+        
+        protected override Bitmap DoExtract(AllFramesReadyEventArgs args)
         {
             using (var cif = args.OpenColorImageFrame())
             {
-                if (DataExtracted != null)
-                    DataExtracted(ImageToBitmap(cif));
+                return ImageToBitmap(cif);
             }
         }
 
@@ -45,26 +59,17 @@ namespace KinectConnect.Core.SDK1x
             bmap.UnlockBits(bmapdata);
             return bmap;
         }
-
-
-        public event Action<Bitmap> DataExtracted;
     }
 
-    static class ImageExtensions
+    public class ByteArrayStreamStrategy : ColorStreamStrategy<byte[]>
     {
-        public static byte[][] to2DJagged(this byte[] buffer, int width, int height, int bytesPerPixel)
+        protected override byte[] DoExtract(AllFramesReadyEventArgs args)
         {
-            byte[][] bytes2d = new byte[height][];
-
-            int rowCounter = 0;
-            for (int i = 0; i < buffer.Length; i += width * bytesPerPixel)
+            using (var cif = args.OpenColorImageFrame())
             {
-                byte[] row = new byte[width * bytesPerPixel];
-                Buffer.BlockCopy(buffer, i, row, 0, width * bytesPerPixel);
-                bytes2d[rowCounter++] = row;
+                Console.WriteLine(cif.Format.ToString());
+                return cif.GetRawPixelData();
             }
-
-            return bytes2d;
         }
     }
 }

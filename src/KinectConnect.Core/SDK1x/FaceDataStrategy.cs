@@ -2,6 +2,7 @@
 using Microsoft.Kinect.Toolkit.FaceTracking;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,16 +19,6 @@ namespace KinectConnect.Core.SDK1x
         private byte[] colorData;
         private short[] depthData;
 
-        public delegate void FaceFrameReadyHandler(object sender, FaceData frame);
-        public event FaceFrameReadyHandler FaceFrameReady;
-        private void FireFaceFrameReady(FaceData frame)
-        {
-            if (FaceFrameReady != null)
-            {
-                FaceFrameReady(this, frame);
-            }
-        }
-
         public Capabilities RequiredCapabilities()
         {
             return Capabilities.All;
@@ -39,7 +30,6 @@ namespace KinectConnect.Core.SDK1x
             using (DepthImageFrame dif = args.OpenDepthImageFrame())
             using (SkeletonFrame sf = args.OpenSkeletonFrame())
             {
-
                 cif.CopyPixelDataTo(colorData);
                 dif.CopyPixelDataTo(depthData);
 
@@ -54,7 +44,7 @@ namespace KinectConnect.Core.SDK1x
                     depthData,
                     skeleton
                 );
-                
+
                 FaceData serializable = frame.ToSerializableFaceData();
                 FireDataExtracted(serializable);
             }
@@ -70,7 +60,7 @@ namespace KinectConnect.Core.SDK1x
             colorData = new byte[sensor.ColorStream.FramePixelDataLength];
             depthData = new short[sensor.DepthStream.FramePixelDataLength];
         }
-
+        
         private void FireDataExtracted(FaceData data)
         {
             if (DataExtracted != null)

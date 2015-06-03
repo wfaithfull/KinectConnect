@@ -1,17 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30324.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectConnect.Core", "KinectConnect.Core\KinectConnect.Core.csproj", "{60B4EC37-DBAF-4D94-961E-8D451D4CC844}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectConnect.Core", "src\KinectConnect.Core\KinectConnect.Core.csproj", "{60B4EC37-DBAF-4D94-961E-8D451D4CC844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectConnect.Server", "KinectConnect.Server\KinectConnect.Server.csproj", "{F7BA5A6E-5B43-4C0E-8A8A-44648D004761}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectConnect.Server", "src\KinectConnect.Server\KinectConnect.Server.csproj", "{F7BA5A6E-5B43-4C0E-8A8A-44648D004761}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Kinect.Toolkit", "Microsoft.Kinect.Toolkit\Microsoft.Kinect.Toolkit.csproj", "{C6F9C31B-6130-4443-A5CC-EF0664552ECD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Kinect.Toolkit", "src\Microsoft.Kinect.Toolkit\Microsoft.Kinect.Toolkit.csproj", "{C6F9C31B-6130-4443-A5CC-EF0664552ECD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Kinect.Toolkit.FaceTracking", "Microsoft.Kinect.Toolkit.FaceTracking\Microsoft.Kinect.Toolkit.FaceTracking.csproj", "{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinectConnect.Core.Test", "KinectConnect.Core.Test\KinectConnect.Core.Test.csproj", "{E5015F48-A418-49B9-8D06-95D4C2206424}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Kinect.Toolkit.FaceTracking", "src\Microsoft.Kinect.Toolkit.FaceTracking\Microsoft.Kinect.Toolkit.FaceTracking.csproj", "{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,8 +67,8 @@ Global
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Debug|Win32.Build.0 = Debug|Win32
-		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Debug|x64.ActiveCfg = Debug|x64
-		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Debug|x64.Build.0 = Debug|x64
+		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Debug|x64.Build.0 = Debug|Any CPU
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Release|Any CPU.ActiveCfg = Release|Win32
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Release|Mixed Platforms.Build.0 = Release|Win32
@@ -78,19 +76,6 @@ Global
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Release|Win32.Build.0 = Release|Win32
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Release|x64.ActiveCfg = Release|x64
 		{1BCF9CEE-DF01-430E-B49D-41A9A88963EB}.Release|x64.Build.0 = Release|x64
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Debug|x64.ActiveCfg = Debug|x64
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Debug|x64.Build.0 = Debug|x64
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Release|Win32.ActiveCfg = Release|Any CPU
-		{E5015F48-A418-49B9-8D06-95D4C2206424}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

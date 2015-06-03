@@ -37,24 +37,24 @@ namespace KinectConnect.CLI
         {
             foreach(string line in Splash())
                 Console.WriteLine(line);
-
-            new Thread(() =>
+            
+            Task.Run(() =>
             {
                 KinectServer.Start(50001);
-            }).Start();
+            });
             
             KinectManager manager = new KinectManager();
 
             Console.WriteLine("Making strategy");
             FaceDataStrategy faceExtractor = new FaceDataStrategy();
-            faceExtractor.FaceFrameReady += (s, e) =>
+            faceExtractor.DataExtracted += e =>
             {
-                //Console.WriteLine("Serializing to JSON... " + e.ToString());
+                Console.WriteLine("Serializing to JSON... " + e.ToString());
                 string json = JsonConvert.SerializeObject(e);
-                
                 KinectServer.WriteToAll(Encoding.UTF8.GetBytes(json));
                 
             };
+
             Console.WriteLine("Making extractor");
             Extractor extractor = new Extractor();
             Console.WriteLine("Registering strategy");
