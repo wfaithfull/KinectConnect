@@ -1,4 +1,4 @@
-# KinectConnect
+# KinectConnect v0.1
 Middleware to serve kinect data to other applications
 
 ## Want to help?
