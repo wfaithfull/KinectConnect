@@ -1,4 +1,4 @@
-NET.addAssembly([pwd '/lib/KinectConnect.Core.dll']);
+importkinect;
 kinect = KinectConnect.Core.Matlab.Kinect(false);
 
 kinect.Start();
