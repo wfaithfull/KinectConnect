@@ -1,6 +1,11 @@
 # KinectConnect
 Middleware to serve kinect data to other applications
 
+## Limitations to be aware of
+* x64 only
+* Windows only
+* Currently Kinect SDK 1x only.
+
 ## Features
 | Feature       | Namespace     |
 | ------------- | ------------- |
