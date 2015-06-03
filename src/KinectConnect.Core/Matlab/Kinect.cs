@@ -16,7 +16,7 @@ namespace KinectConnect.Core.Matlab
         private ConcurrentQueue<FaceData> faceBuffer = new ConcurrentQueue<FaceData>();
         KinectManager manager = new KinectManager();
         private FaceData singleBuffer;
-        private double[] imageArray;
+        private byte[] imageArray;
 
         public bool BufferFrames { get; set; }
 
@@ -34,7 +34,7 @@ namespace KinectConnect.Core.Matlab
 
         public void Start()
         {
-            new Thread(() =>
+            Task.Run(() =>
             {
                 Extractor extractor = new Extractor();
                 FaceDataStrategy faceStrategy = new FaceDataStrategy();
@@ -45,16 +45,16 @@ namespace KinectConnect.Core.Matlab
                     else
                         singleBuffer = faceData;
                 };
-                
+
                 ByteArrayStreamStrategy colorStrategy = new ByteArrayStreamStrategy();
                 colorStrategy.DataExtracted += bytes =>
                 {
-                    imageArray = BytesToDoubles(bytes);
+                    imageArray = bytes;
                 };
                 extractor.RegisterStrategy(faceStrategy);
                 extractor.RegisterStrategy(colorStrategy);
                 extractor.Initialise(manager.Kinect);
-            }).Start();
+            });
         }
 
         public FaceData GetFaceFrame()
@@ -71,7 +71,7 @@ namespace KinectConnect.Core.Matlab
             }
         }
 
-        public double[] GetImage()
+        public byte[] GetImageBytesBgr32640x480()
         {
             return imageArray;
         }

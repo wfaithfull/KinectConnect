@@ -17,6 +17,7 @@ namespace KinectConnect.Core.SDK1x
         SkeletonStream = 4,
         NearMode = 8,
         Seated = 16,
+        FaceTracking = 32,
         All = ~0
     }
 
@@ -33,8 +34,6 @@ namespace KinectConnect.Core.SDK1x
             Prediction = 0.5f,
             Smoothing = 0.5f
         };
-
-        private FaceTracker tracker;
 
         private ColorImageFormat colorFormat;
         private DepthImageFormat depthFormat;
@@ -62,7 +61,6 @@ namespace KinectConnect.Core.SDK1x
         {
             PrepareKinect(capabilities, sensor);
 
-            tracker = new FaceTracker(sensor);
             colorFormat = sensor.ColorStream.Format;
             depthFormat = sensor.DepthStream.Format;
 
