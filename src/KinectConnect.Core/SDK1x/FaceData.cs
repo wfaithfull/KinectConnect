@@ -55,6 +55,12 @@ namespace KinectConnect.Core.SDK1x
 
     public static class SerialUtils
     {
+        /// <summary>
+        /// Converts a Kinect Toolkit FaceTrackFrame to a KinectConnect
+        /// FaceData.
+        /// </summary>
+        /// <param name="frame">Kinect Toolkit FaceTrackFrame</param>
+        /// <returns>KinectConnect FaceData</returns>
         public static FaceData ToSerializableFaceData(this FaceTrackFrame frame)
         {
             var shape = frame.Get3DShape().ToDictionary(x => { return x.ToSerializableVec3(); });
@@ -72,6 +78,11 @@ namespace KinectConnect.Core.SDK1x
             );
         }
 
+        /// <summary>
+        /// Converts a Kinect Toolkit Vector3DF to KinectConnect Vec3.
+        /// </summary>
+        /// <param name="point">Kinect Toolkit Vector3DF</param>
+        /// <returns>KinectConnect Vec2</returns>
         public static Vec3 ToSerializableVec3(this Vector3DF vec)
         {
             return new Vec3()
@@ -82,6 +93,11 @@ namespace KinectConnect.Core.SDK1x
             };
         }
 
+        /// <summary>
+        /// Converts a Kinect Toolkit PointF to KinectConnect Vec2.
+        /// </summary>
+        /// <param name="point">Kinect Toolkit PointF</param>
+        /// <returns>KinectConnect Vec2</returns>
         public static Vec2 ToSerializablePointF(this Microsoft.Kinect.Toolkit.FaceTracking.PointF point)
         {
             return new Vec2()
@@ -92,9 +108,21 @@ namespace KinectConnect.Core.SDK1x
         }
 
         /// <summary>
-        /// Face melting extension conversion method.
-        /// 
         /// Converts EnumIndexableCollection to List of TData and List of string descriptions.
+        /// 
+        /// ** BEFORE YOU JUDGE ME **
+        /// I know this is hard to stomach. Anything with more than two type parameters
+        /// gives me indigestion, however, MS devs saw fit to create a real monstrosity with
+        /// the Kinect SDK v1. The EnumIndexableCollection. This may be a semi-useful format
+        /// at compile time, but we are serving data dynamically at runtime to other applications, 
+        /// so we have to find an easy way to convert to a SANE data type, like a dictionary.
+        /// 
+        /// The best bit is, ALL the type parameters are inferred. Yes, ALL. Example:
+        /// 
+        /// var units = frame.GetAnimationUnitCoefficients().ToDictionary(x => { return x; });
+        /// 
+        /// See, how awesome is that?
+        /// 
         /// </summary>
         /// <typeparam name="TEnum">Type of enumeration the collection is indexed by</typeparam>
         /// <typeparam name="TFrom">Type in the collection to convert from</typeparam>

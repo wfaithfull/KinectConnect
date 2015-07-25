@@ -19,7 +19,7 @@ namespace KinectConnect.Core.SDK1x
 
         public void Initialise(Microsoft.Kinect.KinectSensor sensor)
         {
-            // Not needed
+            // Not needed; Enabled by default.
         }
 
         public void Extract(AllFramesReadyEventArgs args)

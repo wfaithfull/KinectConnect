@@ -21,9 +21,13 @@ namespace KinectConnect.Core.SDK1x
         All = ~0
     }
 
+    /// <summary>
+    /// General extractor class for kinect frames. Utilises strategy pattern
+    /// to pick and choose what information it should extract.
+    /// </summary>
     public class Extractor
     {
-
+        // Common sense defaults.
         private const ColorImageFormat DEFAULT_COLOR_FORMAT = ColorImageFormat.RgbResolution640x480Fps30;
         private const DepthImageFormat DEFAULT_DEPTH_FORMAT = DepthImageFormat.Resolution320x240Fps30;
         private static TransformSmoothParameters DEFAULT_SKELETON_TRANSFORM_PARAMS = new TransformSmoothParameters()
@@ -45,18 +49,32 @@ namespace KinectConnect.Core.SDK1x
 
         private Capabilities capabilities = Capabilities.ColorStream;
 
+        /// <summary>
+        /// The Capabilities enabled for this Extractor.
+        /// </summary>
         public Capabilities Capabilities
         {
             get { return capabilities; }
             private set { capabilities = value; }
         }
 
+        /// <summary>
+        /// Register the extractor <paramref name="strategy"/> to be
+        /// used with this extractor.
+        /// </summary>
+        /// <param name="strategy">A strategy for extracting data from the kinect.</param>
         public void RegisterStrategy(IExtractorStrategy strategy)
         {
             strategies.Add(strategy);
             AggregateCapabilities();
         }
 
+        /// <summary>
+        /// Prepares the <paramref name="sensor"/> for use with
+        /// this extractor. Strategies and Capabilities must be
+        /// configured before this call.
+        /// </summary>
+        /// <param name="sensor">The kinect sensor to be prepared</param>
         public void Initialise(KinectSensor sensor)
         {
             PrepareKinect(capabilities, sensor);
